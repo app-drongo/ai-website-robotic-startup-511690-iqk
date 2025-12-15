@@ -12,8 +12,8 @@ const DEFAULT_NAVIGATION = {
     'Revolutionizing Industries Through Advanced Robotic Intelligence and Automation Solutions',
   logoIcon: 'Bot',
   navItems: [
-    { label: 'Hero', href: '#hero', id: 'hero' },
-    { label: 'Features', href: '#features', id: 'features' },
+    { label: 'Home', href: '/', id: 'home' },
+    { label: 'Pricing', href: '/pricing', id: 'pricing' },
   ],
   ctaText: 'Get Started',
   ctaHref: '/contact',
