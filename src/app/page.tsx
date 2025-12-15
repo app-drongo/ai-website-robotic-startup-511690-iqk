@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 
 import Hero from '@/components/sections/home/Hero'
 import Features from '@/components/sections/home/Features'
+import Features from '@/components/sections/home/Features'
 
 export const metadata: Metadata = {
   title: 'Robotic Startup',
@@ -13,6 +14,9 @@ export default function HomePage() {
     <>
       <section id="hero">
         <Hero />
+      </section>
+      <section id="features">
+        <Features />
       </section>
       <section id="features">
         <Features />

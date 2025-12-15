@@ -3,85 +3,86 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Check, Zap, Star, ArrowRight } from 'lucide-react';
-import { useSmartNavigation } from '@/hooks/useSmartNavigation';
+import { Check, Star, Zap, Shield } from 'lucide-react';
 import { useState } from 'react';
+import { useSmartNavigation } from '@/hooks/useSmartNavigation';
 
 const DEFAULT_PRICING = {
-  title: 'Simple, Transparent Pricing',
-  subtitle: 'Choose the perfect plan for your startup journey',
-  billingToggle: {
-    monthly: 'Monthly',
-    yearly: 'Yearly',
-    yearlyDiscount: 'Save 20%',
-  },
+  title: 'Choose Your Plan',
+  subtitle: 'Scale your tech startup with the right plan for your needs',
+  billingToggle: true,
   plans: [
     {
       name: 'Starter',
       description: 'Perfect for early-stage startups',
       monthlyPrice: 29,
-      yearlyPrice: 23,
-      currency: '$',
-      period: 'month',
-      features: ['Up to 5 team members', '10GB storage', 'Basic analytics', 'Email support'],
-      ctaText: 'Start Free Trial',
-      ctaHref: '/signup?plan=starter',
+      yearlyPrice: 290,
       popular: false,
+      features: [
+        'Up to 5 team members',
+        '10GB cloud storage',
+        'Basic analytics',
+        'Email support',
+        'API access',
+      ],
+      ctaText: 'Start Free Trial',
+      ctaHref: '/signup/starter',
     },
     {
       name: 'Growth',
-      description: 'For scaling teams and growing businesses',
-      monthlyPrice: 79,
-      yearlyPrice: 63,
-      currency: '$',
-      period: 'month',
+      description: 'For scaling tech companies',
+      monthlyPrice: 99,
+      yearlyPrice: 990,
+      popular: true,
       features: [
         'Up to 25 team members',
-        '100GB storage',
+        '100GB cloud storage',
         'Advanced analytics',
         'Priority support',
-        'API access',
+        'Full API access',
         'Custom integrations',
+        'Advanced security',
       ],
       ctaText: 'Get Started',
-      ctaHref: '/signup?plan=growth',
-      popular: true,
+      ctaHref: '/signup/growth',
     },
     {
       name: 'Enterprise',
-      description: 'For large organizations with custom needs',
-      monthlyPrice: 199,
-      yearlyPrice: 159,
-      currency: '$',
-      period: 'month',
+      description: 'For large organizations',
+      monthlyPrice: 299,
+      yearlyPrice: 2990,
+      popular: false,
       features: [
         'Unlimited team members',
-        'Unlimited storage',
-        'Custom analytics',
+        '1TB cloud storage',
+        'Real-time analytics',
         '24/7 phone support',
-        'Custom API limits',
+        'Enterprise API',
+        'Custom solutions',
+        'Advanced security',
         'Dedicated account manager',
-        'SSO integration',
       ],
       ctaText: 'Contact Sales',
-      ctaHref: '/contact?plan=enterprise',
-      popular: false,
+      ctaHref: '/contact/enterprise',
     },
   ],
-  faq: {
-    title: 'Frequently Asked Questions',
-    items: [
-      {
-        question: 'Can I change plans anytime?',
-        answer:
-          'Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately.',
-      },
-      {
-        question: 'Is there a free trial?',
-        answer: 'We offer a 14-day free trial for all plans. No credit card required to start.',
-      },
-    ],
-  },
+  features: [
+    {
+      icon: 'Zap',
+      title: 'Lightning Fast',
+      description: 'Built for performance and speed',
+    },
+    {
+      icon: 'Shield',
+      title: 'Enterprise Security',
+      description: 'Bank-level security for your data',
+    },
+    {
+      icon: 'Star',
+      title: 'Premium Support',
+      description: 'Get help when you need it most',
+    },
+  ],
 } as const;
 
 type PricingProps = Partial<typeof DEFAULT_PRICING>;
@@ -89,7 +90,20 @@ type PricingProps = Partial<typeof DEFAULT_PRICING>;
 export default function Pricing(props: PricingProps) {
   const config = { ...DEFAULT_PRICING, ...props };
   const navigate = useSmartNavigation();
-  const [isYearly, setIsYearly] = useState(false);
+  const [isYearly, setIsYearly] = useState(true);
+
+  const getIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'Zap':
+        return <Zap className="h-6 w-6" />;
+      case 'Shield':
+        return <Shield className="h-6 w-6" />;
+      case 'Star':
+        return <Star className="h-6 w-6" />;
+      default:
+        return <Check className="h-6 w-6" />;
+    }
+  };
 
   const handlePlanSelect = (href: string) => {
     navigate(href);
@@ -97,44 +111,46 @@ export default function Pricing(props: PricingProps) {
 
   return (
     <section id="pricing" className="bg-background text-foreground py-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
+          <h2 className="text-4xl sm:text-5xl font-bold mb-4">
             <span data-editable="title">{config.title}</span>
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
             <span data-editable="subtitle">{config.subtitle}</span>
           </p>
 
           {/* Billing Toggle */}
-          <div className="inline-flex items-center bg-muted rounded-lg p-1">
-            <button
-              onClick={() => setIsYearly(false)}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                !isYearly
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              <span data-editable="billingToggle.monthly">{config.billingToggle.monthly}</span>
-            </button>
-            <button
-              onClick={() => setIsYearly(true)}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
-                isYearly
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              <span data-editable="billingToggle.yearly">{config.billingToggle.yearly}</span>
-              <Badge variant="secondary" className="text-xs">
-                <span data-editable="billingToggle.yearlyDiscount">
-                  {config.billingToggle.yearlyDiscount}
-                </span>
-              </Badge>
-            </button>
-          </div>
+          {config.billingToggle && (
+            <div className="flex items-center justify-center gap-4 mb-12">
+              <span
+                className={`text-sm ${!isYearly ? 'text-foreground' : 'text-muted-foreground'}`}
+              >
+                Monthly
+              </span>
+              <button
+                onClick={() => setIsYearly(!isYearly)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  isYearly ? 'bg-primary' : 'bg-muted'
+                }`}
+                role="switch"
+                aria-checked={isYearly}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-background transition-transform ${
+                    isYearly ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+              <span className={`text-sm ${isYearly ? 'text-foreground' : 'text-muted-foreground'}`}>
+                Yearly
+                <Badge variant="secondary" className="ml-2">
+                  Save 20%
+                </Badge>
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Pricing Cards */}
@@ -143,15 +159,14 @@ export default function Pricing(props: PricingProps) {
             <Card
               key={idx}
               className={`relative ${
-                plan.popular ? 'border-primary shadow-lg scale-105' : 'border-border'
+                plan.popular
+                  ? 'border-primary bg-card text-card-foreground shadow-lg scale-105'
+                  : 'bg-card text-card-foreground'
               }`}
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-primary text-primary-foreground px-4 py-1">
-                    <Star className="w-3 h-3 mr-1" />
-                    Most Popular
-                  </Badge>
+                  <Badge className="bg-primary text-primary-foreground">Most Popular</Badge>
                 </div>
               )}
 
@@ -159,74 +174,60 @@ export default function Pricing(props: PricingProps) {
                 <h3 className="text-2xl font-bold mb-2">
                   <span data-editable={`plans[${idx}].name`}>{plan.name}</span>
                 </h3>
-                <p className="text-muted-foreground mb-6">
+                <p className="text-muted-foreground mb-4">
                   <span data-editable={`plans[${idx}].description`}>{plan.description}</span>
                 </p>
-
-                <div className="mb-6">
-                  <div className="flex items-baseline justify-center">
-                    <span className="text-4xl font-bold">
-                      <span data-editable={`plans[${idx}].currency`}>{plan.currency}</span>
-                      {isYearly ? plan.yearlyPrice : plan.monthlyPrice}
-                    </span>
-                    <span className="text-muted-foreground ml-2">
-                      /<span data-editable={`plans[${idx}].period`}>{plan.period}</span>
-                    </span>
-                  </div>
-                  {isYearly && (
-                    <p className="text-sm text-muted-foreground mt-1">Billed annually</p>
-                  )}
+                <div className="mb-4">
+                  <span className="text-4xl font-bold">
+                    ${isYearly ? plan.yearlyPrice : plan.monthlyPrice}
+                  </span>
+                  <span className="text-muted-foreground">/{isYearly ? 'year' : 'month'}</span>
                 </div>
+              </CardHeader>
+
+              <CardContent>
+                <ul className="space-y-3 mb-8">
+                  {plan.features.map((feature, featureIdx) => (
+                    <li key={featureIdx} className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-primary flex-shrink-0" />
+                      <span data-editable={`plans[${idx}].features[${featureIdx}]`}>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
 
                 <Button
                   onClick={() => handlePlanSelect(plan.ctaHref)}
                   data-editable-href={`plans[${idx}].ctaHref`}
                   data-href={plan.ctaHref}
-                  className={
+                  className={`w-full ${
                     plan.popular
-                      ? 'bg-primary text-primary-foreground hover:bg-primary/90 w-full'
-                      : 'bg-secondary text-secondary-foreground hover:bg-secondary/90 w-full'
-                  }
+                      ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                      : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+                  }`}
+                  size="lg"
                 >
                   <span data-editable={`plans[${idx}].ctaText`}>{plan.ctaText}</span>
-                  <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
-              </CardHeader>
-
-              <CardContent>
-                <ul className="space-y-4">
-                  {plan.features.map((feature, featureIdx) => (
-                    <li key={featureIdx} className="flex items-center">
-                      <Check className="w-5 h-5 text-primary mr-3 flex-shrink-0" />
-                      <span data-editable={`plans[${idx}].features[${featureIdx}]`}>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
               </CardContent>
             </Card>
           ))}
         </div>
 
-        {/* FAQ Section */}
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            <span data-editable="faq.title">{config.faq.title}</span>
-          </h2>
-
-          <div className="space-y-6">
-            {config.faq.items.map((item, idx) => (
-              <Card key={idx} className="bg-card text-card-foreground">
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-semibold mb-3">
-                    <span data-editable={`faq.items[${idx}].question`}>{item.question}</span>
-                  </h3>
-                  <p className="text-muted-foreground">
-                    <span data-editable={`faq.items[${idx}].answer`}>{item.answer}</span>
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+        {/* Features Section */}
+        <div className="grid gap-8 md:grid-cols-3">
+          {config.features.map((feature, idx) => (
+            <div key={idx} className="text-center">
+              <div className="inline-flex items-center justify-center w-12 h-12 bg-primary text-primary-foreground rounded-lg mb-4">
+                {getIcon(feature.icon)}
+              </div>
+              <h3 className="text-xl font-semibold mb-2">
+                <span data-editable={`features[${idx}].title`}>{feature.title}</span>
+              </h3>
+              <p className="text-muted-foreground">
+                <span data-editable={`features[${idx}].description`}>{feature.description}</span>
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

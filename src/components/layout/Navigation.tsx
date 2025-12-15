@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, X, Zap, Settings, Bot } from 'lucide-react';
+import { Menu, X, Zap, Settings, Bot, Star, Shield, Rocket } from 'lucide-react';
 import { useState } from 'react';
 import { useSmartNavigation } from '@/hooks/useSmartNavigation';
 
@@ -13,7 +13,17 @@ const DEFAULT_NAVIGATION = {
   logoIcon: 'Bot',
   navItems: [
     { label: 'Home', href: '/', id: 'home' },
+    { label: 'Features', href: '/features', id: 'features' },
     { label: 'Pricing', href: '/pricing', id: 'pricing' },
+  ],
+  features: [
+    { icon: 'Star', title: 'AI-Powered', description: 'Advanced machine learning algorithms' },
+    {
+      icon: 'Shield',
+      title: 'Enterprise Security',
+      description: 'Bank-grade encryption & compliance',
+    },
+    { icon: 'Rocket', title: 'Lightning Fast', description: 'Optimized for peak performance' },
   ],
   ctaText: 'Get Started',
   ctaHref: '/contact',
@@ -46,6 +56,19 @@ export default function Navigation(props: NavigationProps) {
         : config.logoIcon === 'Settings'
           ? Settings
           : Bot;
+
+  const getFeatureIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'Star':
+        return Star;
+      case 'Shield':
+        return Shield;
+      case 'Rocket':
+        return Rocket;
+      default:
+        return Star;
+    }
+  };
 
   return (
     <section
@@ -159,6 +182,39 @@ export default function Navigation(props: NavigationProps) {
                         ))}
                       </ul>
                     </nav>
+
+                    {/* Mobile Features Preview */}
+                    <div className="mt-8 pt-6 border-t border-border">
+                      <h3 className="text-sm font-semibold text-card-foreground mb-4">
+                        Key Features
+                      </h3>
+                      <div className="space-y-3">
+                        {config.features.map((feature, idx) => {
+                          const FeatureIcon = getFeatureIcon(feature.icon);
+                          return (
+                            <div key={idx} className="flex items-start space-x-3">
+                              <div className="flex items-center justify-center w-8 h-8 bg-primary/10 text-primary rounded-md flex-shrink-0">
+                                <FeatureIcon className="w-4 h-4" aria-hidden="true" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <h4
+                                  className="text-sm font-medium text-card-foreground"
+                                  data-editable={`features[${idx}].title`}
+                                >
+                                  {feature.title}
+                                </h4>
+                                <p
+                                  className="text-xs text-muted-foreground mt-1"
+                                  data-editable={`features[${idx}].description`}
+                                >
+                                  {feature.description}
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
                   </div>
 
                   {/* Mobile CTA */}
