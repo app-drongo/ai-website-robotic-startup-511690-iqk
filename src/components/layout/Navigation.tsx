@@ -7,13 +7,11 @@ import { useState } from 'react';
 import { useSmartNavigation } from '@/hooks/useSmartNavigation';
 
 const DEFAULT_NAVIGATION = {
-  brandName: 'RoboTech',
-  brandTagline:
-    'Revolutionizing Industries Through Advanced Robotic Intelligence and Automation Solutions',
+  brandName: 'PurpleTech',
+  brandTagline: 'Advanced Technology Solutions with Intelligent Features and Seamless Integration',
   logoIcon: 'Bot',
   navItems: [
     { label: 'Home', href: '/', id: 'home' },
-    { label: 'Features', href: '/features', id: 'features' },
     { label: 'Pricing', href: '/pricing', id: 'pricing' },
   ],
   features: [
